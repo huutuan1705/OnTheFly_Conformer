@@ -99,14 +99,12 @@ def train_model(model, args):
             torch.save(
                 {
                     'sample_embedding_network': model.sample_embedding_network.state_dict(),
-                    'sketch_embedding_network': model.sketch_embedding_network.state_dict(),
+                    'conformer': model.conformer.state_dict(),
                 }, args.dataset_name + '_backbone.pth')
             
             torch.save({'attention': model.attention.state_dict(),
-                        'sketch_attention': model.sketch_attention.state_dict(),
                         }, args.dataset_name + '_attention.pth')
             torch.save({'linear': model.linear.state_dict(),
-                        'sketch_linear': model.sketch_linear.state_dict(),
                         }, args.dataset_name + '_linear.pth')
         print('Top 1 accuracy:  {:.4f}'.format(top1_eval))
         print('Top 5 accuracy:  {:.4f}'.format(top5_eval))
