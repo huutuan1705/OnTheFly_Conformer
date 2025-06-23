@@ -6,8 +6,8 @@ from torch.utils.data import Dataset
 from random import randint
 from PIL import Image
 
-from baseline.utils import get_transform
-from baseline.rasterize import rasterize_sketch
+from data.utils import get_transform
+from data.rasterize import rasterize_sketch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
