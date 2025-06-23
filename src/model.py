@@ -35,15 +35,12 @@ class FG_SBIR(nn.Module):
             
         positive_feature = self.sample_embedding_network(positive_img)
         negative_feature = self.sample_embedding_network(negative_img)
-        print(positive_feature.shape)
         
         positive_feature = self.attention(positive_feature)
         negative_feature = self.attention(negative_feature)
-        print(positive_feature.shape)
         
         positive_feature = self.linear(positive_feature)
         negative_feature = self.linear(negative_feature)
-        print(positive_feature.shape)
         
         sketch_feature = self.conformer(sketch_img)
         
