@@ -69,7 +69,7 @@ def train_model(model, args):
     loss_fn = nn.TripletMarginLoss(margin=args.margin)
     optimizer = optim.Adam([
             {'params': model.sample_embedding_network.parameters(), 'lr': args.lr},
-            {'params': model.sketch_embedding_network.parameters(), 'lr': args.lr},
+            {'params': model.conformer.parameters(), 'lr': args.lr},
         ])
     # scheduler = StepLR(optimizer, step_size=100, gamma=0.1)
     
