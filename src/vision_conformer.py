@@ -4,8 +4,8 @@ import torch.nn.functional as F
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 
-from backbones import InceptionV3
-from attention import SelfAttention, Linear_global
+from src.backbones import InceptionV3
+from src.attention import SelfAttention, Linear_global
 # helpers
 
 def pair(t):
