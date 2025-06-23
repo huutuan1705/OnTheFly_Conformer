@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from backbones import InceptionV3
-from attention import Linear_global, SelfAttention
-from vision_conformer import VisionConformer
+from src.backbones import InceptionV3
+from src.attention import Linear_global, SelfAttention
+from src.vision_conformer import VisionConformer
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
