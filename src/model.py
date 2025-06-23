@@ -16,7 +16,7 @@ class FG_SBIR(nn.Module):
         self.attention = SelfAttention(args).to(device)
         self.linear = Linear_global(feature_num=self.args.output_size).to(device)
         
-        self.conformer = VisionConformer()
+        self.conformer = VisionConformer().to(device)
     
         def init_weights(m):
             if type(m) == nn.Linear or type(m) == nn.Conv2d or type(m) == nn.Parameter:
