@@ -58,7 +58,7 @@ class Latentv2Image(nn.Module):
 
 
 class ReconstructionConv(nn.Module):
-    def __init__(self, dim, hidden_channels, patch_size, image_size, cnn_depth, channels=3):
+    def __init__(self, dim, patch_size, image_size, channels=3):
         super().__init__()
         self.dim = dim
         self.image_size = image_size
@@ -130,7 +130,7 @@ class Attention(nn.Module):
         return self.to_out(out)
 
 class ConvolutionalTransformer(nn.Module):
-    def __init__(self, dim, depth, heads, dim_head, mlp_dim, hidden_channels, patch_size, image_size, cnn_depth, dropout = 0.):
+    def __init__(self, dim, depth, heads, dim_head, mlp_dim, patch_size, image_size, dropout = 0.):
         super().__init__()
         self.layers = nn.ModuleList([])
         for _ in range(depth):
@@ -139,7 +139,7 @@ class ConvolutionalTransformer(nn.Module):
                 PreNorm(dim, FeedForward(dim=dim, hidden_dim=mlp_dim, dropout=dropout))
             ]))
         
-        self.reconstruct = ReconstructionConv(dim=dim, hidden_channels=hidden_channels, patch_size=patch_size, image_size=image_size, cnn_depth=cnn_depth)
+        self.reconstruct = ReconstructionConv(dim=dim, patch_size=patch_size, image_size=image_size)
     def forward(self, x):
         for attn, ff in self.layers:
             x = attn(x) + x
@@ -161,9 +161,7 @@ class VisionConformer(nn.Module):
             channels = 3,
             dim_head = 64,
             dropout = 0.1,
-            emb_dropout = 0.1,
-            hidden_channels,
-            cnn_depth):
+            emb_dropout = 0.1):
 
         super().__init__()
         image_height, image_width = pair(image_size)
@@ -177,8 +175,8 @@ class VisionConformer(nn.Module):
         self.pos_embedding = nn.Parameter(torch.randn(1, num_patches + 1, dim))
         self.dropout = nn.Dropout(emb_dropout)
         self.transformer = ConvolutionalTransformer(dim=dim, depth=depth, heads=heads, dim_head=dim_head,
-                                       mlp_dim=mlp_dim, dropout=dropout, hidden_channels=hidden_channels,
-                                       patch_size=patch_size, image_size=image_size, cnn_depth=cnn_depth)
+                                       mlp_dim=mlp_dim, dropout=dropout,
+                                       patch_size=patch_size, image_size=image_size)
 
 
         self.attn = SelfAttention(None)
@@ -206,7 +204,6 @@ if __name__ == "__main__":
     mlp_dim = 256               # Hidden size trong FeedForward
     dim_head = 32               # Kích thước mỗi head trong attention
     hidden_channels = 64        # Số kênh ẩn trong CNN
-    cnn_depth = 1               # Số tầng CNN trong ReconstructionConv
     batch_size = 2              # Batch size
 
     # Tạo ảnh giả lập (batch_size, 3, H, W)
@@ -221,8 +218,6 @@ if __name__ == "__main__":
         heads=heads,
         mlp_dim=mlp_dim,
         dim_head=dim_head,
-        hidden_channels=hidden_channels,
-        cnn_depth=cnn_depth
     )
 
     # Chạy forward
