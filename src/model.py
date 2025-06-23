@@ -33,11 +33,19 @@ class FG_SBIR(nn.Module):
         positive_img = batch['positive_img'].to(device)
         negative_img = batch['negative_img'].to(device)
             
-        positive_feature = self.sample_embedding_network(self.attention(self.linear(positive_img)))
-        negative_feature = self.sample_embedding_network(self.attention(self.linear(negative_img)))
+        positive_feature = self.sample_embedding_network(positive_img)
+        negative_feature = self.sample_embedding_network(negative_img)
         print(positive_feature.shape)
+        
+        positive_feature = self.attention(positive_feature)
+        negative_feature = self.attention(negative_feature)
+        print(positive_feature.shape)
+        
+        positive_feature = self.linear(positive_feature)
+        negative_feature = self.linear(negative_feature)
+        print(positive_feature.shape)
+        
         sketch_feature = self.conformer(sketch_img)
-        print(sketch_feature.shape)
         
         return positive_feature, negative_feature, sketch_feature
     
