@@ -8,6 +8,8 @@ from src.backbones import InceptionV3
 from src.attention import SelfAttention, Linear_global
 # helpers
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 def pair(t):
     return t if isinstance(t, tuple) else (t, t)
 
@@ -42,8 +44,8 @@ class Image2Patch_Embedding(nn.Module):
         self.patch2latentv = nn.Linear(patch_dim, dim)
 
     def forward(self, x):
-        x = self.im2patch(x)
-        x = self.patch2latentv(x)
+        x = self.im2patch(x.to(device))
+        x = self.patch2latentv(x.to(device))
         return x
 
 class Latentv2Image(nn.Module):
