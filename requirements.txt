@@ -1,1 +1,1 @@
-einops
+bresenham==0.2.1
