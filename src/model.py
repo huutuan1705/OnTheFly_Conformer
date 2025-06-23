@@ -46,4 +46,16 @@ class FG_SBIR(nn.Module):
         
         return positive_feature, negative_feature, sketch_feature
     
+    def test_forward(self, batch):        
+        sketch_img = batch['sketch_img'].to(device)
+        positive_img = batch['positive_img'].to(device)
+            
+        positive_feature = self.sample_embedding_network(positive_img)
+        positive_feature = self.attention(positive_feature)
+        positive_feature = self.linear(positive_feature)
+        
+        sketch_feature = self.conformer(sketch_img)
+        
+        return sketch_feature, positive_feature
+    
     
