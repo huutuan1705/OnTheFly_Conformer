@@ -205,7 +205,7 @@ class ConformerBlock(nn.Module):
         # x = self.ff1(x) + x
         x = self.attn(x, mask = mask) + x
         x = self.conv(x) + x
-        x = self.ff2(x) + x
+        # x = self.ff2(x) + x
         x = self.post_norm(x)
         return x
 
