@@ -216,12 +216,12 @@ class Conformer(nn.Module):
         self,
         dim,
         *,
-        depth=1,
+        depth=2,
         dim_head = 64,
         heads = 8,
         ff_mult = 4,
         conv_expansion_factor = 2,
-        conv_kernel_size = 3,
+        conv_kernel_size = 7,
         attn_dropout = 0.,
         ff_dropout = 0.,
         conv_dropout = 0.,
@@ -239,8 +239,10 @@ class Conformer(nn.Module):
                 ff_mult = ff_mult,
                 conv_expansion_factor = conv_expansion_factor,
                 conv_kernel_size = conv_kernel_size,
-                conv_causal = conv_causal
-
+                conv_causal = conv_causal,
+                attn_dropout=attn_dropout,
+                ff_dropout=ff_dropout,
+                conv_dropout=conv_dropout
             ))
 
     def forward(self, x):
@@ -249,3 +251,36 @@ class Conformer(nn.Module):
             x = block(x)
 
         return x
+    
+if __name__ == '__main__':
+    import torch
+
+    # Thông số cấu hình
+    batch_size = 1
+    seq_len = 64
+    dim = 2048  # chiều không gian của mỗi token (feature dimension)
+
+    # Tạo đầu vào giả
+    x = torch.randn(batch_size, seq_len, dim)
+
+    # Khởi tạo mô hình Conformer
+    model = Conformer(
+        dim=dim,
+        depth=4,                   # số lượng block Conformer
+        dim_head=64,              # chiều mỗi head
+        heads=4,                  # số lượng attention heads
+        ff_mult=4,                # hệ số mở rộng của FFN
+        conv_expansion_factor=2,  # mở rộng trong conv module
+        conv_kernel_size=31,      # kích thước kernel trong conv
+        attn_dropout=0.1,
+        ff_dropout=0.1,
+        conv_dropout=0.1,
+        conv_causal=False
+    )
+
+    # Đưa đầu vào qua mô hình
+    out = model(x)
+
+    # In ra shape của output
+    print("Input shape: ", x.shape) # [2, 128, 256]
+    print("Output shape:", out.shape) # [2, 128, 256]

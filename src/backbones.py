@@ -10,8 +10,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class InceptionV3(nn.Module):
     def __init__(self, args):
         super(InceptionV3, self).__init__()
-        backbone = models.inception_v3(weights=Inception_V3_Weights.DEFAULT)
-        # backbone = models.inception_v3()
+        # backbone = models.inception_v3(weights=Inception_V3_Weights.DEFAULT)
+        backbone = models.inception_v3()
         
         ## Extract Inception Layers ##
         self.Conv2d_1a_3x3 = backbone.Conv2d_1a_3x3
@@ -32,6 +32,8 @@ class InceptionV3(nn.Module):
         self.Mixed_7b = backbone.Mixed_7b
         self.Mixed_7c = backbone.Mixed_7c
         self.pool_method =  nn.AdaptiveMaxPool2d(1) # as default
+        self.norm = nn.LayerNorm(2048)
+        
         self.args = args
 
     def forward(self, x):
@@ -72,7 +74,12 @@ class InceptionV3(nn.Module):
         # N x 2048 x 8 x 8
         x = self.Mixed_7c(x)
         
-        return x
+        # return x
+    
+        bs, c, h, w = x.shape
+        output = x.reshape(bs, c, h*w).transpose(1, 2)
+        output = self.norm(output)
+        return output
         
     def fix_weights(self):
         for x in self.parameters():
@@ -82,8 +89,8 @@ if __name__ == "__main__":
     model = InceptionV3(None)
     model.eval()
 
-    dummy_input = torch.randn(1, 3, 224, 224)  
+    dummy_input = torch.randn(1, 3, 299, 299)  
     with torch.no_grad():
         output = model(dummy_input)
 
-    print(f"Output shape: {output.shape}")
+    print(f"Output shape: {output.shape}") # [1, 64, 2048]
