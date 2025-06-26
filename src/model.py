@@ -28,7 +28,8 @@ class FG_SBIR(nn.Module):
             self.attention.apply(init_weights)
             self.linear.apply(init_weights)
             
-            self.conformer.apply(init_weights)
+            self.sketch_attention.apply(init_weights)
+            self.sketch_linear.apply(init_weights)
             
     def forward(self, batch):        
         sketch_img = batch['sketch_img'].to(device)
