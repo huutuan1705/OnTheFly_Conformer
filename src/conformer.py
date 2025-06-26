@@ -216,7 +216,7 @@ class Conformer(nn.Module):
         self,
         dim,
         *,
-        depth=2,
+        depth=1,
         dim_head = 64,
         heads = 8,
         ff_mult = 4,
@@ -230,6 +230,7 @@ class Conformer(nn.Module):
         super().__init__()
         self.dim = dim
         self.layers = nn.ModuleList([])
+        self.norm = nn.LayerNorm(2048)
 
         for _ in range(depth):
             self.layers.append(ConformerBlock(
@@ -246,7 +247,10 @@ class Conformer(nn.Module):
             ))
 
     def forward(self, x):
-
+        bs, c, h, w = x.shape
+        x = x.reshape(bs, c, h*w).transpose(1, 2)
+        x = self.norm(x)
+        
         for block in self.layers:
             x = block(x)
 
