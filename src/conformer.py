@@ -163,8 +163,8 @@ class ConformerConvModule(nn.Module):
             GLU(dim=1),
             DepthWiseConv1d(inner_dim, inner_dim, kernel_size = kernel_size, padding = padding),
             nn.BatchNorm1d(inner_dim) if not causal else nn.Identity(),
-            # Swish(),
-            nn.GELU(),
+            Swish(),
+            # nn.GELU(),
             nn.Conv1d(inner_dim, dim, 1),
             Rearrange('b c n -> b n c'),
             nn.Dropout(dropout)
