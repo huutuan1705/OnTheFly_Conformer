@@ -202,7 +202,6 @@ class ConformerBlock(nn.Module):
         self.post_norm = nn.LayerNorm(dim)
 
     def forward(self, x, mask = None):
-        x = self.ff1(x) + x
         x = self.attn(x, mask = mask) + x
         x = self.conv(x) + x
         x = self.ff2(x) + x
@@ -249,7 +248,6 @@ class Conformer(nn.Module):
     def forward(self, x):
         bs, c, h, w = x.shape
         x = x.reshape(bs, c, h*w).transpose(1, 2)
-        x = self.norm(x)
         
         for block in self.layers:
             x = block(x)
