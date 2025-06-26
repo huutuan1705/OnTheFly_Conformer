@@ -246,9 +246,6 @@ class Conformer(nn.Module):
             ))
 
     def forward(self, x):
-        bs, c, h, w = x.shape
-        x = x.reshape(bs, c, h*w).transpose(1, 2)
-        
         for block in self.layers:
             x = block(x)
 
