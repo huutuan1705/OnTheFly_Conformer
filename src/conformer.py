@@ -164,8 +164,7 @@ class ConformerConvModule(nn.Module):
             DepthWiseConv1d(inner_dim, inner_dim, kernel_size = kernel_size, padding = padding),
             nn.BatchNorm1d(inner_dim) if not causal else nn.Identity(),
             # Swish(),
-            # nn.GELU(),
-            nn.ReLU(),
+            nn.GELU(),
             nn.Conv1d(inner_dim, dim, 1),
             Rearrange('b c n -> b n c'),
             nn.Dropout(dropout)
@@ -186,9 +185,9 @@ class ConformerBlock(nn.Module):
         ff_mult = 4,
         conv_expansion_factor = 2,
         conv_kernel_size = 31,
-        attn_dropout = 0.,
-        ff_dropout = 0.,
-        conv_dropout = 0.,
+        attn_dropout = 0.1,
+        ff_dropout = 0.1,
+        conv_dropout = 0.1,
         conv_causal = False
     ):
         super().__init__()
