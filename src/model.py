@@ -21,7 +21,7 @@ class FG_SBIR(nn.Module):
         self.sketch_linear = Linear_global(feature_num=self.args.output_size).to(device)
     
         def init_weights(m):
-            if type(m) == nn.Linear or type(m) == nn.Conv2d or type(m) == nn.Parameter:
+            if type(m) == nn.Linear or type(m) == nn.Conv1d or type(m) == nn.Parameter:
                 nn.init.kaiming_normal_(m.weight)
                 
         if self.args.use_kaiming_init:
@@ -37,15 +37,16 @@ class FG_SBIR(nn.Module):
             
         positive_feature = self.sample_embedding_network(positive_img)
         negative_feature = self.sample_embedding_network(negative_img)
+        sketch_feature = self.sketch_embedding_network(sketch_img)
         
         positive_feature = self.attention(positive_feature)
         negative_feature = self.attention(negative_feature)
+        sketch_feature = self.sketch_attention(sketch_feature)
         
         positive_feature = self.linear(positive_feature)
         negative_feature = self.linear(negative_feature)
-        
-        sketch_feature = self.conformer(sketch_img)
-        
+        sketch_feature = self.sketch_linear(sketch_feature)
+                
         return positive_feature, negative_feature, sketch_feature
     
     def test_forward(self, batch):        
@@ -56,7 +57,9 @@ class FG_SBIR(nn.Module):
         positive_feature = self.attention(positive_feature)
         positive_feature = self.linear(positive_feature)
         
-        sketch_feature = self.conformer(sketch_img)
+        sketch_feature = self.sketch_embedding_network(sketch_img)
+        sketch_feature = self.sketch_attention(sketch_feature)
+        sketch_feature = self.sketch_linear(sketch_feature)
         
         return sketch_feature, positive_feature
     
