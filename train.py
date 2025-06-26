@@ -101,7 +101,7 @@ def train_model(model, args):
             torch.save(
                 {
                     'sample_embedding_network': model.sample_embedding_network.state_dict(),
-                    'conformer': model.conformer.state_dict(),
+                    'sketch_embedding_network': model.sketch_embedding_network.state_dict(),
                 }, args.dataset_name + '_backbone.pth')
             
             torch.save({'attention': model.attention.state_dict(),
