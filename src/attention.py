@@ -11,7 +11,7 @@ class SelfAttention(nn.Module):
         self.norm = nn.LayerNorm(2048)
         # self.mha = nn.MultiheadAttention(2048, num_heads=args.num_heads, batch_first=True)
         self.mha = nn.MultiheadAttention(2048, num_heads=8, batch_first=True)
-        self.conformer = Conformer(dim=2048)
+        self.conformer = Conformer(dim=2048, conv_kernel_size=14, depth=2)
         
     def forward(self, x):
         identify = x
