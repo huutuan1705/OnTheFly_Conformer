@@ -13,13 +13,13 @@ class FG_SBIR(nn.Module):
         super(FG_SBIR, self).__init__()
         self.args = args
         self.sample_embedding_network = InceptionV3(args=args).to(device)
-        # self.attention = SelfAttention(args).to(device)
-        self.attention = Conformer(dim=2048).to(device)
+        self.attention = SelfAttention(args).to(device)
+        # self.attention = Conformer(dim=2048).to(device)
         self.linear = Linear_global(feature_num=self.args.output_size).to(device)
         
         self.sketch_embedding_network = InceptionV3(args=args).to(device)
-        # self.sketch_attention = SelfAttention(args).to(device)
-        self.sketch_attention = Conformer(dim=2048).to(device)
+        self.sketch_attention = SelfAttention(args).to(device)
+        # self.sketch_attention = Conformer(dim=2048).to(device)
         self.sketch_linear = Linear_global(feature_num=self.args.output_size).to(device)
     
         def init_weights(m):
