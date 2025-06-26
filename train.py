@@ -70,8 +70,6 @@ def train_model(model, args):
     optimizer = optim.Adam([
             {'params': model.sample_embedding_network.parameters(), 'lr': args.lr},
             {'params': model.sketch_embedding_network.parameters(), 'lr': args.lr},
-            # {'params': model.attention.parameters(), 'lr': args.lr},
-            # {'params': model.sketch_attention.parameters(), 'lr': args.lr},
         ])
     # scheduler = StepLR(optimizer, step_size=100, gamma=0.1)
     
