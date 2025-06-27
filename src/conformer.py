@@ -210,7 +210,7 @@ class ConformerBlock(nn.Module):
         # x = self.attn(x, mask = mask) + x
         output = identify*self.attn(x, x, x) + identify
         # x = self.ff2(x) + x
-        output = self.post_norm(x)
+        output = self.post_norm(output)
         return output
 
 # Conformer
