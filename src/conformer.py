@@ -205,7 +205,7 @@ class ConformerBlock(nn.Module):
 
     def forward(self, x, mask = None):
         identify = x
-        x = self.ff1(x) + x
+        # x = self.ff1(x) + x
         x = self.conv(x) + x
         # x = self.attn(x, mask = mask) + x
         att_out, _  = self.attn(x, x, x)
