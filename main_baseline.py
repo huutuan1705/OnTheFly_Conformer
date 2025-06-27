@@ -19,6 +19,8 @@ if __name__ == "__main__":
     parsers.add_argument('--threads', type=int, default=4)
     parsers.add_argument('--lr', type=float, default=0.0001)
     parsers.add_argument('--epochs', type=int, default=300)
+    parsers.add_argument('--load_pretrained', type=bool, default=False)
+    parsers.add_argument('--pretrained', type=str, default="./..")
     
     args = parsers.parse_args()
     model = FG_SBIR(args)

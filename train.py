@@ -94,7 +94,9 @@ def evaluate_model(model, dataloader_test):
     
 def train_model(model, args):
     dataloader_train, dataloader_test = get_dataloader(args)
-    
+    if args.load_pretrained:
+        model.load_state_dict(torch.load(args.pretrained))
+        
     loss_fn = nn.TripletMarginLoss(margin=args.margin)
     optimizer = optim.Adam([
             {'params': model.sample_embedding_network.parameters(), 'lr': args.lr},
