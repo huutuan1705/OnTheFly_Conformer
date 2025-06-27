@@ -197,7 +197,7 @@ class ConformerBlock(nn.Module):
         self.conv = ConformerConvModule(dim = dim, causal = conv_causal, expansion_factor = conv_expansion_factor, kernel_size = conv_kernel_size, dropout = conv_dropout)
         self.ff2 = FeedForward(dim = dim, mult = ff_mult, dropout = ff_dropout)
 
-        self.attn = PreNorm(dim, self.attn)
+        # self.attn = PreNorm(dim, self.attn)
         self.ff1 = Scale(0.5, PreNorm(dim, self.ff1))
         self.ff2 = Scale(0.5, PreNorm(dim, self.ff2))
 
