@@ -7,7 +7,7 @@ from src.conformer import Conformer
 class SelfAttention(nn.Module):
     def __init__(self, args):
         super(SelfAttention, self).__init__()
-        self.pool_method =  nn.AdaptiveAvgPool2d(1)
+        self.pool_method =  nn.AdaptiveMaxPool2d(1)
         self.norm = nn.LayerNorm(2048)
         # self.mha = nn.MultiheadAttention(2048, num_heads=args.num_heads, batch_first=True)
         self.mha = nn.MultiheadAttention(2048, num_heads=8, batch_first=True)
