@@ -193,7 +193,7 @@ class ConformerBlock(nn.Module):
         super().__init__()
         self.ff1 = FeedForward(dim = dim, mult = ff_mult, dropout = ff_dropout)
         # self.attn = Attention(dim = dim, dim_head = dim_head, heads = heads, dropout = attn_dropout)
-        self.attn = nn.MultiheadAttention(embed_dim=dim, num_heads=dim_head, dropout=attn_dropout, batch_first=True)
+        self.attn = nn.MultiheadAttention(embed_dim=dim, num_heads=dim_head, dropout=attn_dropout)
         self.conv = ConformerConvModule(dim = dim, causal = conv_causal, expansion_factor = conv_expansion_factor, kernel_size = conv_kernel_size, dropout = conv_dropout)
         self.ff2 = FeedForward(dim = dim, mult = ff_mult, dropout = ff_dropout)
 
@@ -203,7 +203,7 @@ class ConformerBlock(nn.Module):
 
         self.post_norm = nn.LayerNorm(dim)
 
-    def forward(self, x, mask = None):
+    def forward(self, x):
         identify = x
         # x = self.ff1(x) + x
         x = self.conv(x) + x
