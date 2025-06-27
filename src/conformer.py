@@ -206,11 +206,12 @@ class ConformerBlock(nn.Module):
     def forward(self, x):
         identify = x
         # x = self.ff1(x) + x
-        x = self.conv(x) + x
+        # x = self.conv(x) + x
         # x = self.attn(x, mask = mask) + x
         att_out, _  = self.attn(x, x, x)
-        output = att_out + identify
+        output = identify*att_out + identify
         
+        output = self.conv(output) + output
         output = self.ff2(output) + output
         output = self.post_norm(output)
         return output
@@ -228,8 +229,8 @@ class Conformer(nn.Module):
         ff_mult = 4,
         conv_expansion_factor = 2,
         conv_kernel_size = 7,
-        attn_dropout = 0.1,
-        ff_dropout = 0.1,
+        attn_dropout = 0.,
+        ff_dropout = 0.,
         conv_dropout = 0.,
         conv_causal = False
     ):
