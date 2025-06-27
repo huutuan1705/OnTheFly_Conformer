@@ -20,6 +20,7 @@ class SelfAttention(nn.Module):
         x_att = x.reshape(bs, c, h*w).transpose(1, 2) # [1, 64, 2048]
         x_att = self.norm(x_att)
         # att_out, _  = self.mha(x_att, x_att, x_att)
+        # att_out = self.conformer(x_att)
         # att_out = att_out.transpose(1, 2).reshape(bs, c, h, w)
         
         # output = identify * att_out + identify # [1, 2048, 8, 8]
