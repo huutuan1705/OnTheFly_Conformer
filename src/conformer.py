@@ -204,13 +204,14 @@ class ConformerBlock(nn.Module):
         self.post_norm = nn.LayerNorm(dim)
 
     def forward(self, x, mask = None):
+        identify = x
         # x = self.ff1(x) + x
         x = self.conv(x) + x
         # x = self.attn(x, mask = mask) + x
-        x = self.attn(x, x, x) + x
+        output = identify*self.attn(x, x, x) + identify
         # x = self.ff2(x) + x
-        x = self.post_norm(x)
-        return x
+        output = self.post_norm(x)
+        return output
 
 # Conformer
 
