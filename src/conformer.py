@@ -234,7 +234,7 @@ class Conformer(nn.Module):
         self,
         dim,
         *,
-        depth=1,
+        depth=2,
         dim_head = 64,
         heads = 8,
         ff_mult = 4,
@@ -242,7 +242,7 @@ class Conformer(nn.Module):
         conv_kernel_size = 7,
         attn_dropout = 0.1,
         ff_dropout = 0.,
-        conv_dropout = 0.1,
+        conv_dropout = 0.,
         conv_causal = False
     ):
         super().__init__()
