@@ -202,7 +202,7 @@ class ConformerBlock(nn.Module):
         self.ff2 = Scale(0.5, PreNorm(dim, self.ff2))
 
         self.post_norm = nn.LayerNorm(dim)
-        self.pool_method =  nn.AdaptiveAvgPool1d(1)
+        self.pool_method =  nn.AdaptiveAvgPool2d(1)
 
     def forward(self, x):
         identify = x
