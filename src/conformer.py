@@ -220,10 +220,10 @@ class ConformerBlock(nn.Module):
         
         x = self.conv(x) + x
         x_attn, _  = self.attn(x, x, x)
-        x = x_attn + x
-        x = self.ff2(x) + x
+        # x = x_attn + x
+        # x = self.ff2(x) + x
         
-        att_out = x.transpose(1, 2).reshape(bs, c, h, w)
+        att_out = x_attn.transpose(1, 2).reshape(bs, c, h, w)
         output = identify * att_out + identify # [1, 2048, 8, 8]
         output = self.pool_method(output).view(-1, 2048)
         
