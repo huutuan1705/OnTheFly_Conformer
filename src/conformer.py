@@ -202,6 +202,7 @@ class ConformerBlock(nn.Module):
         self.ff2 = Scale(0.5, PreNorm(dim, self.ff2))
 
         self.post_norm = nn.LayerNorm(dim)
+        self.pool_method =  nn.AdaptiveAvgPool1d(1)
 
     def forward(self, x):
         identify = x
@@ -215,7 +216,7 @@ class ConformerBlock(nn.Module):
         
         bs, c, h, w = x.shape
         x = x.reshape(bs, c, h*w).transpose(1, 2) # [1, 64, 2048]
-        x = self.norm(x)
+        x = self.post_norm(x)
         
         x = self.conv(x) + x
         x_attn, _  = self.attn(x, x, x)
@@ -224,7 +225,7 @@ class ConformerBlock(nn.Module):
         
         att_out = x.transpose(1, 2).reshape(bs, c, h, w)
         output = identify * att_out + identify # [1, 2048, 8, 8]
-        output = self.post_norm(output).view(-1, 2048)
+        output = self.pool_method(output).view(-1, 2048)
         
         return output
 # Conformer
