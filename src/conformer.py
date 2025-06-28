@@ -224,7 +224,6 @@ class ConformerBlock(nn.Module):
         
         att_out = x_attn.transpose(1, 2).reshape(bs, c, h, w)
         output = identify * att_out + identify # [1, 2048, 8, 8]
-        output = self.pool_method(output).view(-1, 2048)
         
         return output
 # Conformer
@@ -248,7 +247,7 @@ class Conformer(nn.Module):
         super().__init__()
         self.dim = dim
         self.layers = nn.ModuleList([])
-        self.norm = nn.LayerNorm(2048)
+        self.pool_method =  nn.AdaptiveAvgPool2d(1)
 
         for _ in range(depth):
             self.layers.append(ConformerBlock(
@@ -267,6 +266,7 @@ class Conformer(nn.Module):
     def forward(self, x):
         for block in self.layers:
             x = block(x)
+        x = self.pool_method(x).view(-1, 2048)
 
         return x
     
