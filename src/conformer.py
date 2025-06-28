@@ -239,7 +239,7 @@ class Conformer(nn.Module):
         ff_mult = 4,
         conv_expansion_factor = 2,
         conv_kernel_size = 8,
-        attn_dropout = 0.,
+        attn_dropout = 0.1,
         ff_dropout = 0.,
         conv_dropout = 0.,
         conv_causal = False
