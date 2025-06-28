@@ -218,7 +218,7 @@ class ConformerBlock(nn.Module):
         x = x.reshape(bs, c, h*w).transpose(1, 2) # [1, 64, 2048]
         x = self.post_norm(x)
         
-        x = self.conv(x) + x
+        x = self.conv(x)
         x_attn, _  = self.attn(x, x, x)
         # x = x_attn + x
         # x = self.ff2(x) + x
