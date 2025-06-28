@@ -218,12 +218,9 @@ class ConformerBlock(nn.Module):
         bs, c, h, w = x.shape
         x = x.reshape(bs, c, h*w).transpose(1, 2) # [1, 64, 2048]
         x = self.post_norm(x)
-        x = self.ff1(x) + x
         
         x = self.conv(x) + x
         x_attn, _  = self.attn(x, x, x)
-        # x = x_attn + x
-        # x = self.ff2(x) + x
         
         att_out = x_attn.transpose(1, 2).reshape(bs, c, h, w)
         output = identify * att_out + identify # [1, 2048, 8, 8]
@@ -244,8 +241,8 @@ class Conformer(nn.Module):
         conv_expansion_factor = 2,
         conv_kernel_size = 7,
         attn_dropout = 0.1,
-        ff_dropout = 0.1,
-        conv_dropout = 0.,
+        ff_dropout = 0.,
+        conv_dropout = 0.1,
         conv_causal = False
     ):
         super().__init__()
