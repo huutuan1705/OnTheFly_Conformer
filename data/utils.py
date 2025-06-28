@@ -24,3 +24,7 @@ def get_transform(type):
         ]
         
     return transforms.Compose(transform_list)
+
+def calc_same_padding(kernel_size):
+    pad = kernel_size // 2
+    return (pad, pad - (kernel_size + 1) % 2)
