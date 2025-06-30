@@ -236,7 +236,7 @@ class Conformer(nn.Module):
         *,
         depth=1,
         dim_head = 64,
-        heads = 16,
+        heads = 32,
         ff_mult = 4,
         conv_expansion_factor = 2,
         conv_kernel_size = 7,
