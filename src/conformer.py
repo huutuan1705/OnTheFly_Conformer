@@ -234,7 +234,7 @@ class Conformer(nn.Module):
         self,
         dim,
         *,
-        depth=2,
+        depth=1,
         dim_head = 64,
         heads = 16,
         ff_mult = 4,
