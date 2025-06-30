@@ -239,11 +239,11 @@ class Conformer(nn.Module):
         heads = 16,
         ff_mult = 4,
         conv_expansion_factor = 2,
-        conv_kernel_size = 7,
+        conv_kernel_size = 8,
         attn_dropout = 0.,
         ff_dropout = 0.,
         conv_dropout = 0.,
-        conv_causal = True
+        conv_causal = False
     ):
         super().__init__()
         self.dim = dim
