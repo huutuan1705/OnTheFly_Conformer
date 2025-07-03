@@ -219,12 +219,12 @@ class ConformerBlock(nn.Module):
         x = x.reshape(bs, c, h*w).transpose(1, 2) # [1, 64, 2048]
         x = self.post_norm(x)
         
+        x = self.conv(x) + x
         x_attn, _  = self.attn(x, x, x)
         x = x_attn + x
-        x = self.conv(x)
         
         output = x.transpose(1, 2).reshape(bs, c, h, w)
-        output = identify * output + identify # [1, 2048, 8, 8]
+        # output = identify * output + identify # [1, 2048, 8, 8]
         
         return output
 # Conformer
