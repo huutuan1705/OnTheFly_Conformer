@@ -224,7 +224,7 @@ class ConformerBlock(nn.Module):
         x_attn, _  = self.attn(x, x, x)
         x = x_attn + x
         
-        att_out = x_attn.transpose(1, 2).reshape(bs, c, h, w)
+        att_out = x.transpose(1, 2).reshape(bs, c, h, w)
         output = identify * att_out + identify # [1, 2048, 8, 8]
         
         return output
